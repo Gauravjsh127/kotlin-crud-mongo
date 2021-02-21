@@ -3,7 +3,6 @@ package com.services.mongo.controller
 import com.services.mongo.models.Transaction
 import com.services.mongo.repository.TransactionRepository
 import com.services.mongo.data.TransactionDto
-import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.* // ktlint-disable no-wildcard-imports
@@ -23,7 +22,7 @@ class TransactionController(
 
     @GetMapping("/{id}")
     fun getTransactionById(@PathVariable("id") id: String): ResponseEntity<Transaction> {
-        val transaction = transactionRepository.findOneById(ObjectId(id))
+        val transaction = transactionRepository.findOneById(id)
         return ResponseEntity.ok(transaction)
     }
 
@@ -41,7 +40,7 @@ class TransactionController(
 
     @PutMapping("/{id}")
     fun updateTransaction(@RequestBody request: TransactionDto, @PathVariable("id") id: String): ResponseEntity<Transaction> {
-        val transaction = transactionRepository.findOneById(ObjectId(id))
+        val transaction = transactionRepository.findOneById(id)
         val updatedTransaction = transactionRepository.save(
             Transaction(
                 id = transaction.id,
