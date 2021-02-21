@@ -1,6 +1,6 @@
 package com.services.mongo.request
 
-class PatientRequest(
+class TransactionRequest(
     val name: String,
     val description: String
 )
