@@ -1,8 +1,8 @@
 package com.services.mongo.controller
 
-import com.services.mongo.data.Transaction
+import com.services.mongo.models.Transaction
 import com.services.mongo.repository.TransactionRepository
-import com.services.mongo.request.TransactionRequest
+import com.services.mongo.data.TransactionDto
 import org.bson.types.ObjectId
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -28,7 +28,7 @@ class TransactionController(
     }
 
     @PostMapping
-    fun createTransaction(@RequestBody request: TransactionRequest): ResponseEntity<Transaction> {
+    fun createTransaction(@RequestBody request: TransactionDto): ResponseEntity<Transaction> {
         val transaction = transactionRepository.save(
             Transaction(
                 sender = request.sender,
@@ -40,7 +40,7 @@ class TransactionController(
     }
 
     @PutMapping("/{id}")
-    fun updateTransaction(@RequestBody request: TransactionRequest, @PathVariable("id") id: String): ResponseEntity<Transaction> {
+    fun updateTransaction(@RequestBody request: TransactionDto, @PathVariable("id") id: String): ResponseEntity<Transaction> {
         val transaction = transactionRepository.findOneById(ObjectId(id))
         val updatedTransaction = transactionRepository.save(
             Transaction(

@@ -1,4 +1,4 @@
-package com.services.mongo.data
+package com.services.mongo.models
 
 import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
