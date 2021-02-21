@@ -1,14 +1,13 @@
 package com.services.mongo.models
 
-import org.bson.types.ObjectId
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 import java.time.LocalDateTime
 
 @Document
 data class Transaction(
-    @Id
-    val id: ObjectId = ObjectId.get(),
+    @get: Id
+    val id: String? = null,
     val sender: String,
     val recipient: String,
     val amount: Float,
