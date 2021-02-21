@@ -9,8 +9,9 @@ import java.time.LocalDateTime
 data class Transaction(
     @Id
     val id: ObjectId = ObjectId.get(),
-    val name: String,
-    val description: String,
+    val sender: String,
+    val recipient: String,
+    val amount: Float,
     val createdDate: LocalDateTime = LocalDateTime.now(),
     val modifiedDate: LocalDateTime = LocalDateTime.now()
 )

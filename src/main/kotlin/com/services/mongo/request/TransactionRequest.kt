@@ -1,6 +1,9 @@
 package com.services.mongo.request
 
+import javax.validation.constraints.NotBlank
+
 class TransactionRequest(
-    val name: String,
-    val description: String
+    @get:NotBlank val sender: String,
+    @get:NotBlank val recipient: String,
+    @get:NotBlank val amount: Float
 )

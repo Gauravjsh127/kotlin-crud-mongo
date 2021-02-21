@@ -16,45 +16,47 @@ class TransactionController(
 ) {
 
     @GetMapping
-    fun getAllPatients(): ResponseEntity<List<Transaction>> {
-        val patients = transactionRepository.findAll()
-        return ResponseEntity.ok(patients)
+    fun getAllTransactions(): ResponseEntity<List<Transaction>> {
+        val transactions = transactionRepository.findAll()
+        return ResponseEntity.ok(transactions)
     }
 
     @GetMapping("/{id}")
-    fun getOnePatient(@PathVariable("id") id: String): ResponseEntity<Transaction> {
-        val patient = transactionRepository.findOneById(ObjectId(id))
-        return ResponseEntity.ok(patient)
+    fun getTransactionById(@PathVariable("id") id: String): ResponseEntity<Transaction> {
+        val transaction = transactionRepository.findOneById(ObjectId(id))
+        return ResponseEntity.ok(transaction)
     }
 
     @PostMapping
-    fun createPatient(@RequestBody request: TransactionRequest): ResponseEntity<Transaction> {
-        val patient = transactionRepository.save(
+    fun createTransaction(@RequestBody request: TransactionRequest): ResponseEntity<Transaction> {
+        val transaction = transactionRepository.save(
             Transaction(
-                name = request.name,
-                description = request.description
+                sender = request.sender,
+                recipient = request.recipient,
+                amount = request.amount
             )
         )
-        return ResponseEntity(patient, HttpStatus.CREATED)
+        return ResponseEntity(transaction, HttpStatus.CREATED)
     }
 
     @PutMapping("/{id}")
-    fun updatePatient(@RequestBody request: TransactionRequest, @PathVariable("id") id: String): ResponseEntity<Transaction> {
-        val patient = transactionRepository.findOneById(ObjectId(id))
-        val updatedPatient = transactionRepository.save(
+    fun updateTransaction(@RequestBody request: TransactionRequest, @PathVariable("id") id: String): ResponseEntity<Transaction> {
+        val transaction = transactionRepository.findOneById(ObjectId(id))
+        val updatedTransaction = transactionRepository.save(
             Transaction(
-                id = patient.id,
-                name = request.name,
-                description = request.description,
-                createdDate = patient.createdDate,
+                id = transaction.id,
+                sender = request.sender,
+                recipient = request.recipient,
+                amount = request.amount,
+                createdDate = transaction.createdDate,
                 modifiedDate = LocalDateTime.now()
             )
         )
-        return ResponseEntity.ok(updatedPatient)
+        return ResponseEntity.ok(updatedTransaction)
     }
 
     @DeleteMapping("/{id}")
-    fun deletePatient(@PathVariable("id") id: String): ResponseEntity<Unit> {
+    fun deleteTransactionById(@PathVariable("id") id: String): ResponseEntity<Unit> {
         transactionRepository.deleteById(id)
         return ResponseEntity.noContent().build()
     }
