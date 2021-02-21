@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: KOTLIN_MONGODB_SERVICE
+
+springdoc:
+  swagger-ui:
+    path: /api-docs
+  api-docs:
+    path: /api-docs-json
+
+
+---
+spring:
+  profiles: default
+server:
+  servlet:
+    contextPath: /
+
+
+---
+spring:
+  profiles: dev
+  data:
+    mongodb:
+      authentication-database: admin
+      database: testDatabase
+      host: 127.0.0.1
+      port: 27017
+      username: user
+      password: password
+server:
+  servlet:
+    contextPath: /
+  port: 8086
+
+
+---
+spring:
+  profiles: test
