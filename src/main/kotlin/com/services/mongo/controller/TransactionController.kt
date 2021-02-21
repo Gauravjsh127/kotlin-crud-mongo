@@ -1,7 +1,7 @@
 package com.services.mongo.controller
 
 import com.services.mongo.models.Transaction
-import com.services.mongo.repository.TransactionRepository
+import com.services.mongo.services.TransactionService
 import com.services.mongo.data.TransactionDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -11,52 +11,35 @@ import java.time.LocalDateTime
 @RestController
 @RequestMapping("/transactions")
 class TransactionController(
-    private val transactionRepository: TransactionRepository
+    val transactionService: TransactionService
 ) {
 
     @GetMapping
     fun getAllTransactions(): ResponseEntity<List<Transaction>> {
-        val transactions = transactionRepository.findAll()
-        return ResponseEntity.ok(transactions)
+        return ResponseEntity.ok(transactionService.getAllTransactions())
     }
 
     @GetMapping("/{id}")
     fun getTransactionById(@PathVariable("id") id: String): ResponseEntity<Transaction> {
-        val transaction = transactionRepository.findOneById(id)
+        val transaction = transactionService.getTransaction(id = id)
         return ResponseEntity.ok(transaction)
     }
 
     @PostMapping
     fun createTransaction(@RequestBody request: TransactionDto): ResponseEntity<Transaction> {
-        val transaction = transactionRepository.save(
-            Transaction(
-                sender = request.sender,
-                recipient = request.recipient,
-                amount = request.amount
-            )
-        )
+        val transaction = transactionService.createTransaction(request)
         return ResponseEntity(transaction, HttpStatus.CREATED)
     }
 
     @PutMapping("/{id}")
     fun updateTransaction(@RequestBody request: TransactionDto, @PathVariable("id") id: String): ResponseEntity<Transaction> {
-        val transaction = transactionRepository.findOneById(id)
-        val updatedTransaction = transactionRepository.save(
-            Transaction(
-                id = transaction.id,
-                sender = request.sender,
-                recipient = request.recipient,
-                amount = request.amount,
-                createdDate = transaction.createdDate,
-                modifiedDate = LocalDateTime.now()
-            )
-        )
+        val updatedTransaction = transactionService.updateTransaction(id =id, request = request)
         return ResponseEntity.ok(updatedTransaction)
     }
 
     @DeleteMapping("/{id}")
     fun deleteTransactionById(@PathVariable("id") id: String): ResponseEntity<Unit> {
-        transactionRepository.deleteById(id)
+        transactionService.deleteTransaction(id =id)
         return ResponseEntity.noContent().build()
     }
 }
